@@ -1,0 +1,24 @@
+{
+  "version": "spaces-registry@1",
+  "updatedAt": "2026-04-23T00:00:00.000Z",
+  "spaces": [
+    {
+      "id": "studio-os-chat",
+      "displayName": "Studio OS Chat",
+      "description": "Primary chat UI space — React/Vite PWA with prompt history, file index, and multi-provider LLM.",
+      "inboxPath": "spaces/studio-os-chat/inbox.md",
+      "outboxPath": "spaces/studio-os-chat/outbox.md",
+      "repo": "nothinginfinity/Studio-OS-Chat",
+      "status": "active"
+    },
+    {
+      "id": "studio-os",
+      "displayName": "Studio OS",
+      "description": "OS orchestration layer — space management, routing, and runtime coordination.",
+      "inboxPath": "spaces/studio-os/inbox.md",
+      "outboxPath": "spaces/studio-os/outbox.md",
+      "repo": "nothinginfinity/studio-os-spaces",
+      "status": "active"
+    }
+  ]
+}
