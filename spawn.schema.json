@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/nothinginfinity/studio-os-spaces/spawn.schema.json",
+  "title": "SpawnManifest",
+  "description": "Schema for spaces/<space-id>/spawn.json. Dropping this file into a spaces/ subfolder triggers the spawn-space GitHub Action, which creates inbox.md, outbox.md, INSTRUCTIONS.md, and registers the space in registry.json.",
+  "type": "object",
+  "required": ["id", "displayName", "description"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique kebab-case identifier for the space. Must match the folder name under spaces/.",
+      "pattern": "^[a-z0-9-]+$",
+      "examples": ["my-new-space", "project-alpha"]
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Human-readable name shown in the registry and INSTRUCTIONS.md.",
+      "examples": ["My New Space", "Project Alpha"]
+    },
+    "description": {
+      "type": "string",
+      "description": "One or two sentences describing what this space does."
+    },
+    "role": {
+      "type": "string",
+      "enum": ["peer", "worker", "orchestrator", "observer"],
+      "default": "peer",
+      "description": "The space's role in the network. peer = bidirectional, worker = receives tasks and returns results, orchestrator = routes and coordinates, observer = read-only."
+    },
+    "context": {
+      "type": "string",
+      "description": "Freeform context about what you're working on. Included verbatim in INSTRUCTIONS.md to help the space understand its purpose."
+    },
+    "repo": {
+      "type": "string",
+      "description": "Primary GitHub repo this space monitors/operates on. Included as a source in INSTRUCTIONS.md.",
+      "examples": ["nothinginfinity/Studio-OS-Chat"]
+    },
+    "sources": {
+      "type": "array",
+      "description": "List of GitHub repos or URLs to add as Perplexity Space sources.",
+      "items": { "type": "string" },
+      "examples": [["nothinginfinity/studio-os-spaces", "nothinginfinity/Studio-OS-Chat"]]
+    },
+    "peers": {
+      "type": "array",
+      "description": "Space IDs this space can send messages to. Used for routing and documentation.",
+      "items": { "type": "string" },
+      "examples": [["studio-os", "studio-os-chat"]]
+    },
+    "peerRoutes": {
+      "type": "array",
+      "description": "Explicit peer route definitions. Generated automatically from peers[] if omitted.",
+      "items": {
+        "type": "object",
+        "required": ["spaceId"],
+        "properties": {
+          "spaceId": { "type": "string" },
+          "label": { "type": "string" }
+        }
+      }
+    },
+    "systemPromptExtra": {
+      "type": "string",
+      "description": "Optional extra text appended to the generated Perplexity system prompt block."
+    }
+  },
+  "additionalProperties": false
+}

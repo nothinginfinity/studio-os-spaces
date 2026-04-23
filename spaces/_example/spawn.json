@@ -1,0 +1,21 @@
+{
+  "id": "_example",
+  "displayName": "Example Space",
+  "description": "A template showing all available spawn.json fields. Copy this folder, rename it to your space ID, fill in the fields, and push — the GitHub Action will wire everything up automatically.",
+  "role": "peer",
+  "context": "This space is focused on [describe what you're building or working on here]. It coordinates with studio-os-chat for UI tasks and studio-os for orchestration.",
+  "repo": "nothinginfinity/Studio-OS-Chat",
+  "sources": [
+    "nothinginfinity/studio-os-spaces",
+    "nothinginfinity/Studio-OS-Chat"
+  ],
+  "peers": [
+    "studio-os",
+    "studio-os-chat"
+  ],
+  "peerRoutes": [
+    { "spaceId": "studio-os", "label": "OS orchestration layer" },
+    { "spaceId": "studio-os-chat", "label": "Primary chat UI" }
+  ],
+  "systemPromptExtra": "Always reply in structured markdown. When sending a message to another space, use the envelope format defined in the studio-os-spaces README."
+}
