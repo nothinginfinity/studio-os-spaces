@@ -1,0 +1,46 @@
+name: Spawn Space
+
+on:
+  push:
+    paths:
+      - 'spaces/*/spawn.json'
+
+jobs:
+  spawn:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Find changed spawn.json
+        id: find
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD | grep 'spawn.json' | head -1)
+          echo "file=$CHANGED" >> $GITHUB_OUTPUT
+          SPACE_ID=$(echo "$CHANGED" | cut -d'/' -f2)
+          echo "space_id=$SPACE_ID" >> $GITHUB_OUTPUT
+
+      - name: Run Space Spawner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SPACE_ID: ${{ steps.find.outputs.space_id }}
+          SPAWN_FILE: ${{ steps.find.outputs.file }}
+        run: node .github/scripts/spawn-space.mjs
+
+      - name: Commit generated files
+        run: |
+          git config user.name "studio-os-bot"
+          git config user.email "bot@studio-os.local"
+          git add spaces/ registry.json
+          git diff --staged --quiet || git commit -m "chore(spawn): wire space ${{ steps.find.outputs.space_id }}"
+          git push
